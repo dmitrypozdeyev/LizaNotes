@@ -20,14 +20,25 @@ note_imp_cb = ttk.Combobox(values=imp_vars)
 note_imp_Label.grid(row=2, column=0)
 note_imp_cb.grid(row=2, column=1)
 def save_note():
-    with open("notes.json", "r") as file:
-        notes = json.load(file)
-    note["text"] = note_text_entry.get()
-    note["date"] = note_date_entry.get()
-    note["imp"] = int(note_imp_cb.get())
-    notes.append(note)
-    with open("notes.json", "w") as file:
-        json.dump(notes, file, indent=4)
+    try:
+        with open("notes.json", "r") as file:
+            notes = json.load(file)
+        note["text"] = note_text_entry.get()
+        note["date"] = note_date_entry.get()
+        note["imp"] = int(note_imp_cb.get())
+        notes.append(note)
+        with open("notes.json", "w") as file:
+            json.dump(notes, file, indent=4)
+    except FileNotFoundError:
+        notes = []
+        note["text"] = note_text_entry.get()
+        note["date"] = note_date_entry.get()
+        note["imp"] = int(note_imp_cb.get())
+        notes.append(note)
+        with open("notes.json", "w") as file:
+            json.dump(notes, file, indent=4)
+        
+        
 note_save_btn = Button(text="Добавить", command=save_note)
 note_save_btn.grid(row=3, column=1)
 
